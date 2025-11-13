@@ -16,26 +16,27 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyCheckBox(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class MyCheckBox extends StatefulWidget {
+  const MyCheckBox({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyCheckBox> createState() => _MyCheckBoxState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyCheckBoxState extends State<MyCheckBox> {
+  bool isChecked = false;
 
-  void _incrementCounter() {
+  /// isCheckedの値を反転するメソッド
+  /// trueなら、falseに
+  /// falseなら、trueに
+  void _toggleCheckBox() {
     setState(() {
-      _counter++;
+      isChecked = !isChecked;
     });
   }
 
@@ -43,28 +44,27 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('MyCheckBox Demo'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 70),
+              child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: const Text('利用規約に同意する。'),
+                  value: isChecked,
+                  onChanged: (value) {
+                    _toggleCheckBox();
+                  }),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Text('isCheckedの状態 = [$isChecked]')
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
